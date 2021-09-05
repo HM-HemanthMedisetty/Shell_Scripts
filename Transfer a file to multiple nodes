@@ -1,0 +1,6 @@
+read -p "Enter the file you want to transfer:" file_name
+
+for i in mach002 mach003 mach004 mach005 mach006;
+do
+scp $file_name medisettyh@$i:/tmp
+done
