@@ -1,4 +1,4 @@
-ssh -tt medisettyh@Box001 -t "sudo su - oracle" << EOF
+ssh -tt medisetty@Box001 -t "sudo su - oracle" << EOF
 cd /Hemanth/soa1_domain/mserver/soa1_domain/servers/WLS_SOA1/logs/safagents/OSM_SAFAgent1/jms/
 ls
 rm jms.messages.log0* jms.messages.log1* jms.messages.log2* jms.messages.log3* jms.messages.log4* jms.messages.log5* jms.messages.log6* jms.messages.log7* jms.messages.log8* jms.messages.log9* 
@@ -9,7 +9,7 @@ pwd
 logout
 EOF
 
-ssh -tt medisettyh@Box002 -t "sudo su - oracle" << EOF
+ssh -tt medisetty@Box002 -t "sudo su - oracle" << EOF
 cd /Hemanth/soa1_domain/mserver/soa1_domain/servers/WLS_SOA2/logs/safagents/OSM_SAFAgent2/jms/
 ls
 rm jms.messages.log0* jms.messages.log1* jms.messages.log2* jms.messages.log3* jms.messages.log4* jms.messages.log5* jms.messages.log6* jms.messages.log7* jms.messages.log8* jms.messages.log9* 
@@ -20,7 +20,7 @@ pwd
 logout
 EOF
 
-ssh -tt medisettyh@Box003 -t "sudo su - oracle" << EOF
+ssh -tt medisetty@Box003 -t "sudo su - oracle" << EOF
 cd /Hemanth/soa1_domain/mserver/soa1_domain/servers/WLS_SOA3/logs/safagents/OSM_SAFAgent3/jms/
 ls
 rm jms.messages.log0* jms.messages.log1* jms.messages.log2* jms.messages.log3* jms.messages.log4* jms.messages.log5* jms.messages.log6* jms.messages.log7* jms.messages.log8* jms.messages.log9* 
@@ -31,7 +31,7 @@ pwd
 logout
 EOF
 
-ssh -tt medisettyh@Box004 -t "sudo su - oracle" << EOF
+ssh -tt medisetty@Box004 -t "sudo su - oracle" << EOF
 cd /Hemanth/soa1_domain/mserver/soa1_domain/servers/WLS_SOA4/logs/safagents/OSM_SAFAgent4/jms/
 ls
 rm jms.messages.log0* jms.messages.log1* jms.messages.log2* jms.messages.log3* jms.messages.log4* jms.messages.log5* jms.messages.log6* jms.messages.log7* jms.messages.log8* jms.messages.log9* 
@@ -42,7 +42,7 @@ pwd
 logout
 EOF
 
-ssh -tt medisettyh@Box005 -t "sudo su - oracle" << EOF
+ssh -tt medisetty@Box005 -t "sudo su - oracle" << EOF
 cd /Hemanth/soa1_domain/mserver/soa1_domain/servers/WLS_SOA5/logs/safagents/OSM_SAFAgent5/jms/
 ls
 rm jms.messages.log0* jms.messages.log1* jms.messages.log2* jms.messages.log3* jms.messages.log4* jms.messages.log5* jms.messages.log6* jms.messages.log7* jms.messages.log8* jms.messages.log9* 
@@ -53,7 +53,7 @@ pwd
 logout
 EOF
 
-ssh -tt medisettyh@Box006 -t "sudo su - oracle" << EOF
+ssh -tt medisetty@Box006 -t "sudo su - oracle" << EOF
 cd /Hemanth/soa1_domain/mserver/soa1_domain/servers/WLS_SOA6/logs/safagents/OSM_SAFAgent6/jms/
 ls
 rm jms.messages.log0* jms.messages.log1* jms.messages.log2* jms.messages.log3* jms.messages.log4* jms.messages.log5* jms.messages.log6* jms.messages.log7* jms.messages.log8* jms.messages.log9* 
