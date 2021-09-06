@@ -1,0 +1,17 @@
+URL_HIT='http://host:port/X/Y/Z?wsdl'
+echo "Enter user : "
+read USER
+echo "Enter Password : "
+read PASSWD
+script_home=/Hemanth/bin/CAP_Automation
+sed "s/USER/$USER/; s/PASSWD/$PASSWD/" "$script_home/CAP_Request.xml" >> $script_home/CAP_Request_f.xml
+SOAPFILE=$script_home/CAP_Request_f.xml
+curl --silent --header 'Content-Type: text/xml;charset=UTF-8' --data @"$SOAPFILE" "${URL}" --connect-timeout 5 > $script_home/CAP_Response.xml
+cat CAP_Response.xml | cut -d '>' -f9 | cut -d '<' -f1 > tokena.txt
+cat tokena.txt | tr -d " \t\n\r" > token.txt
+token=`cat token.txt`
+echo $token
+rm $script_home/CAP_Request_f.xml
+rm $script_home/CAP_Response.xml
+#rm token.txt
+rm tokena.txt
