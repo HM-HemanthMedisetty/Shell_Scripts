@@ -33,3 +33,27 @@ rm pwd_decrypt.txt
 echo " ">> DS_Details.txt
 done
 
+
+##############################################################
+
+decrypt_password.py  --> Its a googled source code which im calling in my script.
+from weblogic.security.internal import *
+from weblogic.security.internal.encryption import *
+encryptionService = SerializedSystemIni.getEncryptionService(".")
+clearOrEncryptService = ClearOrEncryptedService(encryptionService)
+
+# Take encrypt password from user
+pwd = raw_input("Paste encrypted password ({AES}fk9EK...): ")
+
+# Delete unnecessary escape characters
+preppwd = pwd.replace("\\", "")
+
+print preppwd
+# Display password
+print "Decrypted string is: " + clearOrEncryptService.decrypt(preppwd)
+
+
+
+
+
+
