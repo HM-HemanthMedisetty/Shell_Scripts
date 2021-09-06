@@ -1,0 +1,67 @@
+
+#begin
+
+#Change the below code accordingly where your Admin Server hosts
+
+echo "Moving tmp and cache of Box001 soa2_domain-->WLS01"
+cd /Hemanth/admin/soa2_domain/mserver/servers/WLS_SOA1
+mv tmp tmp_$(date +%Y-%m-%d-%T)
+mv cache cache_$(date +%Y-%m-%d-%T)
+echo "Moving tmp and cache of Box001 soa2_domain-->WSM1"
+cd /Hemanth/admin/soa2_domain/mserver/servers/WLS_WSM1
+mv tmp tmp_$(date +%Y-%m-%d-%T)
+mv cache cache_$(date +%Y-%m-%d-%T)
+
+
+ssh -tt medisettyh@Box002 -t "sudo su - oracle" << EOF
+echo "Moving tmp and cache of Box002 soa2_domain-->WLS02"
+cd /Hemanth/admin/soa2_domain/mserver/servers/WLS_SOA2
+mv tmp tmp_$(date +%Y-%m-%d-%T)
+mv cache cache_$(date +%Y-%m-%d-%T)
+echo "Moving tmp and cache of Box002 soa2_domain-->WSM2"
+cd /Hemanth/admin/soa2_domain/mserver/servers/WLS_WSM2
+mv tmp tmp_$(date +%Y-%m-%d-%T)
+mv cache cache_$(date +%Y-%m-%d-%T)
+logout
+EOF
+
+
+ssh -tt medisettyh@Box003 -t "sudo su - oracle" << EOF
+echo "Moving tmp and cache of Box003 soa1_domain-->WLS03"
+cd /Hemanth/admin/soa2_domain/mserver/servers/WLS_SOA3
+mv tmp tmp_$(date +%Y-%m-%d-%T)
+mv cache cache_$(date +%Y-%m-%d-%T)
+logout
+EOF
+
+
+ssh -tt medisettyh@Box004 -t "sudo su - oracle" << EOF
+echo "Moving tmp and cache of Box004 soa2_domain Admin Server"
+cd /c3d/prod/fmw/admin/soa2_domain/aserver/servers/AdminServer
+mv tmp tmp_$(date +%Y-%m-%d-%T)
+mv cache cache_$(date +%Y-%m-%d-%T)
+echo "Moving tmp and cache of Box004 soa1_domain-->WLS04"
+cd /Hemanth/admin/soa2_domain/mserver/servers/WLS_SOA4
+mv tmp tmp_$(date +%Y-%m-%d)
+mv cache cache_$(date +%Y-%m-%d)
+logout
+EOF
+
+
+ssh -tt medisettyh@Box005 -t "sudo su - oracle" << EOF
+echo "Moving tmp and cache of Box005 soa1_domain-->WLS05"
+cd /Hemanth/admin/soa2_domain/mserver/servers/WLS_SOA5
+mv tmp tmp_$(date +%Y-%m-%d-%T)
+mv cache cache_$(date +%Y-%m-%d-%T)
+logout
+EOF
+
+
+ssh -tt medisettyh@Box006 -t "sudo su - oracle" << EOF
+echo "Moving tmp and cache of Box006 soa1_domain-->WLS06"
+cd /Hemanth/admin/soa2_domain/mserver/servers/WLS_SOA6
+mv tmp tmp_$(date +%Y-%m-%d-%T)
+mv cache cache_$(date +%Y-%m-%d-%T)
+logout
+EOF
+#end
