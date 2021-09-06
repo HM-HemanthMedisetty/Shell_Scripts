@@ -1,0 +1,20 @@
+#StartComposite.sh
+#!/bin/sh
+echo "Starting........."
+/Hemanth/Oracle/Middleware/Oracle_SOA1/common/bin/wlst.sh << EOF
+sca_startComposite('hostaddress','Port','username','password','composite name','composite version',partition='default')
+exit()
+EOF
+echo -n "composite name  Started"
+#end
+
+#StopComposite.sh
+
+#!/bin/sh
+echo " Stoping........."
+/Hemanth/Oracle/Middleware/Oracle_SOA1/common/bin/wlst.sh << EOF
+sca_stopComposite('hostaddress','Port','username','password','composite name','composite version',partition='default')
+exit()
+EOF
+echo -n "composite name Stopped"
+#end
