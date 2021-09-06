@@ -36,7 +36,8 @@ done
 
 ##############################################################
 
-decrypt_password.py  --> Its a googled source code which im calling in my script.
+decrypt_password.py  --> It's a googled source code which im calling in my script.
+
 from weblogic.security.internal import *
 from weblogic.security.internal.encryption import *
 encryptionService = SerializedSystemIni.getEncryptionService(".")
