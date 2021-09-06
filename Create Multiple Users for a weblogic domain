@@ -1,0 +1,17 @@
+#!/bin/sh
+input="/opt/sp/fmw/Hemanth/usernames.txt"
+while IFS= read user_name
+do
+/Hemanth/Oracle/Middleware/Oracle_SOA1/common/bin/wlst.sh << EOF
+connect('hemanth', 'Kumar@123', 't3://hostadress:Port')
+from weblogic.management.security.authentication import UserEditorMBean
+atnr=cmo.getSecurityConfiguration().getDefaultRealm().lookupAuthenticationProvider("DefaultAuthenticator")
+atnr.createUser('$user_name','devuser123','Dev User')
+atnr.addMemberToGroup('Monitors','$user_name')
+atnr.addMemberToGroup('Operators','$user_name')
+atnr.addMemberToGroup('AppTesters','$user_name')
+exit()
+EOF
+
+echo "please*********************"
+done < "$input"
