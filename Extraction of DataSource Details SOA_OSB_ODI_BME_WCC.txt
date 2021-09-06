@@ -1,0 +1,35 @@
+cd /Hemanth/prod/aserver/config/jdbc
+:>DS_Details.txt
+for FILE in *.xml
+do
+echo "$FILE" >> DS_Details.txt
+grep name $FILE | head -1 >> DS_Details.txt
+grep url $FILE | head -1 >> DS_Details.txt
+user_line=`cat -n $FILE | awk '/'user'/ {print $1}' | head -n 1`
+ ((++user_line))
+head -$user_line $FILE | tail -1 >> DS_Details.txt
+grep password-encrypted $FILE | head -1 >> DS_Details.txt
+grep password-encrypted $FILE | head -1 > cpy_pwd.txt
+awk '{gsub("<password-encrypted>", "");print}' < cpy_pwd.txt > cpy_pwd1.txt
+awk '{gsub("</password-encrypted>", "");print}' < cpy_pwd1.txt > cpy_pwd.txt 
+cat cpy_pwd.txt | awk '{print $1}' > cpy_pwd1.txt
+mv cpy_pwd1.txt cpy_pwd.txt 
+
+
+mv cpy_pwd.txt /Hemanth/prod/aserver/security
+cd /Hemanth/prod/aserver/security
+java weblogic.WLST decrypt_password.py < cpy_pwd.txt > pwd.txt
+rm cpy_pwd.txt 
+grep Decrypted pwd.txt > pwd_decrypt.txt
+rm pwd.txt 
+echo "**************  $FILE ***************" >> pwd_decrypt.txt
+
+
+mv pwd_decrypt.txt /Hemanth/prod/aserver/config/jdbc
+cd /Hemanth/prod/aserver/config/jdbc
+
+cat pwd_decrypt.txt >> DS_Details.txt
+rm pwd_decrypt.txt 
+echo " ">> DS_Details.txt
+done
+
