@@ -6,9 +6,48 @@ TOMORROW=`date +%d -d "1 day"`
  if  [  $TOMORROW  -lt  $TODAY  ];  then
 	cd /Hemanth/scripts/Applications/FMW/PROD/HemanthK
 	. /Hemanth/middleware/wlserver_10.3/server/bin/setWLSEnv.sh > kumar.txt
-	java weblogic.WLST L500INJMSQ.py > hemanth.txt
+	java weblogic.WLST Pause_L500INJMSQ.py > hemanth.txt
 	./Mail_Status_L500INJMSQ.sh
  fi
+
+
+########################################################################################
+# Pause_L500INJMSQ Queue Monitoring Automation WLST Script				#
+########################################################################################
+#Running the script - It's a googled one I had changed accordingly my need		#
+########################################################################################
+import re, os
+import time as systime
+
+#Connecting to Server
+connect('Username','Password','t3://hostaddress:Port')
+domainRuntime()
+
+domainName=cmo.getName()
+servers = domainRuntimeService.getServerRuntimes();
+if (len(servers) > 0):
+        for server in servers:
+            jmsRuntime = server.getJMSRuntime();
+	    jmsServers = jmsRuntime.getJMSServers();
+            if(len(jmsServers) > 0):
+      		for jmsServer in jmsServers:
+                    if re.match('^(ASNL500JMSServer_[0-6])', jmsServer.getName()):
+			cd('domainRuntime:/ServerRuntimes/' + server.getName() + '/JMSRuntime/' + server.getName() + '.jms/JMSServers/' + jmsServer.getName() + '/Destinations')
+			QueueList = cmo.getDestinations()
+        		for queue in QueueList:
+                	  if queue.getName().endswith('UpdateShipmentStatusL500INJMSQ'):
+			      cd(queue.getName())
+			      currentMsgCount=cmo.getMessagesCurrentCount()
+			      pendingMsgCount=cmo.getMessagesPendingCount()
+			      print "Statistics for Queue : " + queue.getName()
+			      print "CURRENT MESSAGES COUNT : " + str(currentMsgCount)
+			      print "PENDING MESSAGES COUNT : " + str(pendingMsgCount)
+			      print "Pausing Queue Consumption : " + cmo.getName()
+			      cmo.pauseConsumption()
+			      print "Queue Consumption Paused"
+			      print "Queue Consumption State : " + cmo.getConsumptionPausedState()
+			      cd('..')
+disconnect()
 
 
 
