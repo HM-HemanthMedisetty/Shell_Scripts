@@ -1,0 +1,326 @@
+	########################################################## AM ZONE Expiry Filter ###########################################################
+
+
+	#read -p "Enter StartMonth(mm):" Month
+	Month=05
+	#read -p "Enter StartMonth LastDate:" LastDate
+	LastDate=31
+	#read -p "Enter NextMonth:" NextMonth
+	NextMonth=06
+	#read -p "Enter Year(20yy):" Year
+	Year=17
+
+	for SD in {1..31}
+	do
+	for StartTime in {1..11}
+			do
+					echo "----> $Month <----- ----> $SD <----- ----> $StartTime AM <------"
+					EndTime=`echo "$StartTime"`
+					((++EndTime))
+
+					if [ $StartTime -lt 11 ] && [ $EndTime != 12 ]
+						then
+							#echo "\n if loop"
+							sed "s/Year/$Year/g" "ChangeConnect.config" > YearChangeConnect.config
+							sed "s/Month/$Month/g" "YearChangeConnect.config" > MonthChangeConnect.config
+							sed "s/StartTime/$StartTime/" "MonthChangeConnect.config" > AConnect.config
+							sed "s/EndTime/$EndTime/" "AConnect.config" > BConnect.config
+							sed "s/SD/$SD/g" "BConnect.config" > CConnect.config
+							sed "s/ZONE/AM/g" "CConnect.config" > DConnect.config
+							echo -e "\n**************************************** O P E N ***************************************\n"
+							date
+							echo -e "\n**************************************** O P E N ***************************************\n\n" > Hemanth.txt
+							date >> Hemanth.txt
+							echo -e "Time_Check \n" >> Hemanth.txt
+							cat DConnect.config >> Hemanth.txt
+							cp DConnect.config config.properties
+							
+							Out1=`grep  'query=' config.properties`
+							echo "\n STEP-1\n"
+							date
+							echo -e "\n STEP-1 \n" > Checklogs.txt
+							./run.sh >> Checklogs.txt
+							Out2=`grep 'Total' Checklogs.txt`
+							echo -e "\n $Out1 "
+							echo -e "\n $Out2 \n"
+							echo -e "$Out1 --> $Out2 \n" >> ArchiveStats.txt
+							echo "\n STEP-2\n"
+							date
+							echo -e "\n\n\n STEP-2 \n" >> Checklogs.txt
+							./run.sh >> Checklogs.txt
+							i=0
+							while [[ $i == 0 ]]
+							do
+								Animal=`grep 'Zero documents found. Nothing to do.' Checklogs.txt | wc -l`
+								echo "$Animal Single Check"
+								if [[ $Animal == 1 || $Animal == 2 ]]; 
+								then
+									echo "\nBreaking\n"
+									break
+								
+								else
+									echo -e "\n\n\n STEP-3 \n" >> Checklogs.txt
+									echo "\n STEP-3\n"
+									date
+									./run.sh >> Checklogs.txt
+									Animal=`grep 'Zero documents found. Nothing to do.' Checklogs.txt | wc -l`
+									echo "$Animal Double Check"
+									if [[ $Animal == 2 || $Animal == 3 ]]; then
+										break
+									fi
+								fi
+							done
+		
+
+					elif [ $StartTime == 11 ]
+							then
+									#echo "\n Write elif "
+									EndTime=1
+									sed "s/Year/$Year/g" "ChangeConnect.config" > YearChangeConnect.config
+									sed "s/Month/$Month/g" "YearChangeConnect.config" > MonthChangeConnect.config
+									sed "s/StartTime/$StartTime/" "MonthChangeConnect.config" > AConnect.config
+									sed "s/EndTime/$EndTime/" "AConnect.config" > BConnect.config
+									sed "s/SD/$SD/g" "BConnect.config" > CConnect.config
+									sed "s/ZONE/AM/" "CConnect.config" > ZoneConnect.config
+									sed "s/ZONE/PM/" "ZoneConnect.config" > DConnect.config
+									echo -e "\n**************************************** O P E N ***************************************\n"
+									date
+									echo -e "\n**************************************** O P E N ***************************************\n\n" > Hemanth.txt
+									date >> Hemanth.txt
+									echo -e "Time_Check \n" >> Hemanth.txt
+									cat DConnect.config >> Hemanth.txt
+									cp DConnect.config config.properties
+									
+									Out1=`grep  'query=' config.properties`
+							echo -e "\n STEP-1 \n" > Checklogs.txt
+							echo "\n STEP-1\n"
+							date
+							./run.sh >> Checklogs.txt
+							Out2=`grep 'Total' Checklogs.txt`
+							echo -e "\n $Out1 "
+							echo -e "\n $Out2 \n"
+							echo -e "$Out1 --> $Out2 \n" >> ArchiveStats.txt
+							
+							echo -e "\n\n\n STEP-2 \n" >> Checklogs.txt
+							echo "\n STEP-2\n"
+							date
+							./run.sh >> Checklogs.txt
+							i=0
+							while [[ $i == 0 ]]
+							do
+								Animal=`grep 'Zero documents found. Nothing to do.' Checklogs.txt | wc -l`
+								echo "$Animal Single Check"
+								if [[ $Animal == 1 || $Animal == 2 ]]; 
+								then
+									echo "\nBreaking\n"
+									break
+								
+								else
+									echo -e "\n\n\n STEP-3 \n" >> Checklogs.txt
+									echo "\n STEP-3\n"
+									date
+									./run.sh >> Checklogs.txt
+									Animal=`grep 'Zero documents found. Nothing to do.' Checklogs.txt | wc -l`
+									echo "$Animal Double Check"
+									if [[ $Animal == 2 || $Animal == 3 ]]; then
+										break
+									fi
+								fi
+							done
+									
+							
+									
+					fi
+
+					#To Find the date for specific logs
+					sed -n '5p' config.properties | awk '{print $7}' > xy
+					cat xy | tr -d '`' > xyz
+					sed 's/\//\_/g' xyz > xy
+					DATEEE=`cat xy`
+					#echo "$DATEEE"
+									
+					echo -e "\n\n" >> Hemanth.txt
+					cat Checklogs.txt >> Hemanth.txt
+					cat Hemanth.txt >> Output_$DATEEE.txt
+					
+					
+					echo -e "\n**************************************** C L O S E D ***************************************\n"
+					date
+					echo -e "\n**************************************** C L O S E D ***************************************\n\n" >> Output_$DATEEE.txt
+
+			done
+
+	########################################################## PM ZONE Expiry Filter ###########################################################
+
+	for StartTime in {1..11}
+			do
+					echo "----> $Month <----- ----> $SD <----- ----> $StartTime PM <------"
+					EndTime=`echo "$StartTime"`
+					((++EndTime))
+
+					if [ $StartTime -lt 11 ] && [ $EndTime != 12 ]
+						then
+							#echo "\n if loop"
+							sed "s/Year/$Year/g" "ChangeConnect.config" > YearChangeConnect.config
+							sed "s/Month/$Month/g" "YearChangeConnect.config" > MonthChangeConnect.config
+							sed "s/StartTime/$StartTime/" "MonthChangeConnect.config" > AConnect.config
+							sed "s/EndTime/$EndTime/" "AConnect.config" > BConnect.config
+							sed "s/SD/$SD/g" "BConnect.config" > CConnect.config
+							sed "s/ZONE/PM/g" "CConnect.config" > DConnect.config
+							echo -e "\n**************************************** O P E N ***************************************\n"
+							date
+							echo -e "\n**************************************** O P E N ***************************************\n\n" > Hemanth.txt
+							date >> Hemanth.txt
+							echo -e "Time_Check \n" >> Hemanth.txt
+							cat DConnect.config >> Hemanth.txt
+							cp DConnect.config config.properties
+							
+							Out1=`grep  'query=' config.properties`
+							echo -e "\n STEP-1 \n" > Checklogs.txt
+							echo "\n STEP-1\n"
+							date
+							./run.sh >> Checklogs.txt
+							Out2=`grep 'Total' Checklogs.txt`
+							echo -e "\n $Out1 "
+							echo -e "\n $Out2 \n"
+							echo -e "$Out1 --> $Out2 \n" >> ArchiveStats.txt
+							echo -e "\n\n\n STEP-2 \n" >> Checklogs.txt
+							echo "\n STEP-2\n"
+							date
+							./run.sh >> Checklogs.txt
+							i=0
+							while [[ $i == 0 ]]
+							do
+								Animal=`grep 'Zero documents found. Nothing to do.' Checklogs.txt | wc -l`
+								echo "$Animal Single Check"
+								if [[ $Animal == 1 || $Animal == 2 ]]; 
+								then
+									echo "\nBreaking\n"
+									break
+								
+								else
+									echo -e "\n\n\n STEP-3 \n" >> Checklogs.txt
+									echo "\n STEP-3\n"
+									date
+									./run.sh >> Checklogs.txt
+									Animal=`grep 'Zero documents found. Nothing to do.' Checklogs.txt | wc -l`
+									echo "$Animal Double Check"
+									if [[ $Animal == 2 || $Animal == 3 ]]; then
+										break
+									fi
+								fi
+							done
+							
+							
+		
+
+					elif [ $StartTime == 11 ]
+							then
+									#echo "\n Write elif "
+									EndTime=1
+									sed "s/Year/$Year/" "ChangeConnect.config" > YearChangeConnect.config
+									sed "s/Month/$Month/" "YearChangeConnect.config" > MonthChangeConnect.config
+									sed "s/StartTime/$StartTime/" "MonthChangeConnect.config" > AConnect.config
+									sed "s/EndTime/$EndTime/" "AConnect.config" > BConnect.config
+									sed "s/SD/$SD/" "BConnect.config" > CConnect.config
+									
+									if [ $SD == $LastDate ]
+										then
+											echo "Validation $SD == $LastDate"
+											SD=01
+											sed "s/SD/$SD/" "CConnect.config" > LastDateConnect.config										
+											sed "s/Month/$NextMonth/" "LastDateConnect.config" > MonthChangeConnect.config
+											sed "s/ZONE/PM/" "MonthChangeConnect.config" > ZoneConnect.config
+											sed "s/ZONE/AM/" "ZoneConnect.config" > DConnect.config
+									else
+											echo "Failed >>>>>> Validation $SD == $LastDate"
+											sed "s/Month/$Month/" "CConnect.config" > MonthChangeConnect.config
+											((++SD))
+											sed "s/SD/$SD/" "MonthChangeConnect.config" > CSDConnect.config
+											sed "s/ZONE/PM/" "CSDConnect.config" > ZoneConnect.config
+											sed "s/ZONE/AM/" "ZoneConnect.config" > DConnect.config
+									fi
+									
+									echo "$Month##############"
+									
+									if [ $Month == 12 ] && [ $SD == 01 ]
+										then
+											((++Year))
+											echo "$Year Hemanth"
+											sed "s/Year/$Year/" "DConnect.config" > YearChangeConnect.config
+											cp YearChangeConnect.config DConnect.config
+										
+									else
+											sed "s/Year/$Year/" "DConnect.config" > YearChangeConnect.config
+											cp YearChangeConnect.config DConnect.config
+									fi
+											
+									
+									echo -e "\n**************************************** O P E N ***************************************\n"
+									date
+									echo -e "\n**************************************** O P E N ***************************************\n\n" > Hemanth.txt
+									date >> Hemanth.txt
+									echo -e "Time_Check \n" >> Hemanth.txt
+									cat DConnect.config >> Hemanth.txt
+									cp DConnect.config config.properties
+									
+									Out1=`grep  'query=' config.properties`
+							echo -e "\n STEP-1 \n" > Checklogs.txt
+							echo "\n STEP-2\n"
+							date
+							./run.sh >> Checklogs.txt
+							Out2=`grep 'Total' Checklogs.txt`
+							echo -e "\n $Out1 "
+							echo -e "\n $Out2 \n"
+							echo -e "$Out1 --> $Out2 \n" >> ArchiveStats.txt
+							echo -e "\n\n\n STEP-2 \n" >> Checklogs.txt
+							echo "\n STEP-2\n"
+							date
+							./run.sh >> Checklogs.txt
+							i=0
+							while [[ $i == 0 ]]
+							do
+								Animal=`grep 'Zero documents found. Nothing to do.' Checklogs.txt | wc -l`
+								echo "$Animal Single Check"
+								if [[ $Animal == 1 || $Animal == 2 ]]; 
+								then
+									echo "\nBreaking\n"
+									break
+								
+								else
+									echo -e "\n\n\n STEP-3 \n" >> Checklogs.txt
+									echo "\n STEP-3\n"
+									date
+									./run.sh >> Checklogs.txt
+									Animal=`grep 'Zero documents found. Nothing to do.' Checklogs.txt | wc -l`
+									echo "$Animal Double Check"
+									if [[ $Animal == 2 || $Animal == 3 ]]; then
+										break
+									fi
+								fi
+							done
+							
+									
+					fi
+
+					#To Find the date for specific logs
+					sed -n '5p' config.properties | awk '{print $7}' > xy
+					cat xy | tr -d '`' > xyz
+					sed 's/\//\_/g' xyz > xy
+					DATEEE=`cat xy`
+					#echo "$DATEEE"
+									
+					echo -e "\n\n" >> Hemanth.txt
+					cat Checklogs.txt >> Hemanth.txt
+					cat Hemanth.txt >> Output_$DATEEE.txt
+					
+					
+					echo -e "\n**************************************** C L O S E D ***************************************\n"
+					date
+					echo -e "\n**************************************** C L O S E D ***************************************\n\n" >> Output_$DATEEE.txt
+
+			done
+			mv AConnect.config BConnect.config CConnect.config Checklogs.txt CSDConnect.config DConnect.config Hemanth.txt LastDateConnect.config MonthChangeConnect.config xy xyz YearChangeConnect.config ZoneConnect.config /c3d/prod/ucm/shared/ucm_domain/cs/BulkUpdateExpiryDate/.waste
+			mv Output_* Outputlogs
+	done
+	
