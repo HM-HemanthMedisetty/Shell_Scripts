@@ -1,0 +1,55 @@
+
+TODAY=`date +%d`
+TOMORROW=`date +%d -d "1 day"`
+
+ # See if tomorrow's day is less than today's
+ if  [  $TOMORROW  -lt  $TODAY  ];  then
+	cd /Hemanth/scripts/Applications/FMW/PROD/HemanthK
+	. /Hemanth/middleware/wlserver_10.3/server/bin/setWLSEnv.sh > kumar.txt
+	java weblogic.WLST L500INJMSQ.py > hemanth.txt
+	./Mail_Status_L500INJMSQ.sh
+ fi
+
+
+
+#############################################################################################
+######## Mail_Status_L500INJMSQ.sh
+#######################################################
+
+filename="QueueStatus_L500INJMSQPause_$(date +%Y_%m_%d_%T).log"
+cd Hemanth/scripts/Applications/FMW/PROD/HemanthK/
+mv hemanth.txt $filename
+
+				ToList="To:VC.CSS.EM.FMW@accenture.com"
+				CcList="Cc:pavan.talakuntla@accenture.com,chakrababu.totakura@accenture.com"
+				FromList="From:hemanthkumar.medisetty@vcontractor.co.za"
+				Subject="Subject:PROD | STATUS | L500INJMSQ_Pause  "
+				Body="Please find the attachment contains the L500INJMSQ pause details"
+				Twin=500
+					if  [ $Twin -lt 1000 ];
+					then
+					(
+						echo $ToList
+						echo $CcList
+						echo $FromList
+						echo $Subject  
+    echo 'Content-Type: multipart/mixed; boundary="-q1w2e3r4t5"'
+    echo
+    echo '---q1w2e3r4t5'
+    echo 'Content-Type: text/html; charset=utf-8'
+    echo 'Content-Transfer-Encoding: 8bit'
+    echo
+    echo $Body
+    echo '---q1w2e3r4t5'
+    echo 'Content-Type: text/plain; charset=utf-8; name="'$filename'"'
+    echo 'Content-Transfer-Encoding: base64'
+    echo 'Content-Disposition: attachment; filename="'$filename'"'
+    echo
+    base64 <"$filename"
+    echo
+    echo '---q1w2e3r4t5--'
+
+					) | /usr/sbin/sendmail -t 
+					fi
+
+mv $filename hemanth.txt
