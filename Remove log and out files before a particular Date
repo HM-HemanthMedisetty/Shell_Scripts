@@ -1,0 +1,80 @@
+#begin
+
+N=`echo -e "\033[m"`
+B=`echo -e "\033[36m"`
+Y=`echo -e "\033[33m"`
+G=`echo -e "\e[1;32m"`
+R=`echo -e "\033[01;31m"`
+
+clear
+echo "$B Please check carefully ***DATE*** of **LAST** *SAVED* file"
+echo 
+echo "$G *******************************************CLEARING SOA .LOG AND .OUT FILES************************************************************$N"
+echo -e "\n\n"
+echo "check TILL which date $R ***SOA_ADMIN_LOG*** $N files should remove "; 
+cd /Hemanth/logs/soa_domain/AdminServer
+echo "/Hemanth/logs/soa_domain/AdminServer $Y"
+echo
+ls -l | grep -i AdminServer.log
+echo
+read -p "Proceed to go for clearing $R SOA_ADMIN_LOG $N files (y/n):" choice
+if [ y = $choice ]
+	then
+read -p "$Y SOA_ADMIN_LOG Date format should be (YYYY-MM-DT): $N" dat
+soa_Admin_logs=$((($(date +%s)-$(date +%s --date "$dat"))/(3600*24))) 
+find /Hemanth/logs/soa_domain/AdminServer -mtime +$soa_Admin_logs -name 'AdminServer.log*' -exec rm -rf {} \;
+echo "Deleted the ***SOA_ADMIN_LOG*** files for past $soa_Admin_logs days $Y"
+clear
+ls -l | grep -i AdminServer.log
+echo
+read -p "$N WAIT and Validate-->After validate Press any key:" choice
+fi
+
+
+clear
+echo "check TILL which date $R ***SOA_SERVER_LOG*** $N files should remove"
+echo
+cd /Hemanth/logs/soa_domain/soa_server1
+echo "/Hemanth/logs/soa_domain/soa_server1 $Y"
+echo
+ls -l | grep -i soa_server1.log;
+echo 
+read -p "$N Proceed to go for clearing $R SOA_SERVER_LOG $N files (y/n):" choice
+if [ y = $choice ]
+	then
+		
+		
+		echo 
+		read -p "$Y SOA_SERVER_LOG Date format should be (YYYY-MM-DT): $N" dat
+		soa_logs=$((($(date +%s)-$(date +%s --date "$dat"))/(3600*24))) 
+		find /Hemanth/logs/soa_domain/soa_server1 -mtime +$soa_logs -name 'soa_server1.log*' -exec rm -rf {} \;		
+		echo "Deleted the ***SOA_SERVER_LOG*** files for past $soa_logs days $Y"
+		clear
+		ls -l | grep -i soa_server1.log ; 
+		read -p "$N WAIT and Validate-->After validate Press any key:" choice
+		
+fi
+clear
+echo -e "$R SOA_SERVER_OUT FILES --> /Hemanth/logs/soa_domain/soa_server1 $N \n\n"	
+echo "$Y"
+ls -l | grep -i soa_server1.out
+echo "$N"
+read -p "Proceed to go for clearing $R SOA_SERVER_OUT $N files (y/n):" choice
+			if [ y = $choice ]
+				then
+				
+				echo
+				echo "check TILL which date $R ***SOA_SERVER_OUT*** $N files should remove"
+				echo
+				read -p "$Y SOA_SERVER_OUT Date format should be (YYYY-MM-DT): $N" dat
+				soa_outs=$((($(date +%s)-$(date +%s --date "$dat"))/(3600*24))) 
+				find /Hemanth/logs/soa_domain/soa_server1 -mtime +$soa_outs -name 'soa_server1.out*' -exec rm -rf {} \;
+				echo "Deleted the ***SOA_SERVER_OUT*** files for past $soa_outs days $Y"
+				clear
+				ls -l | grep -i soa_server1.out 
+				read -p "$N WAIT and Validate-->After validate Press any key:" choice
+				
+
+			fi
+
+clear
