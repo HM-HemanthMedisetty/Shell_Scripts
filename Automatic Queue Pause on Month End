@@ -59,9 +59,9 @@ filename="QueueStatus_L500INJMSQPause_$(date +%Y_%m_%d_%T).log"
 cd Hemanth/scripts/Applications/FMW/PROD/HemanthK/
 mv hemanth.txt $filename
 
-				ToList="To:VC.CSS.EM.FMW@accenture.com"
-				CcList="Cc:pavan.talakuntla@accenture.com,chakrababu.totakura@accenture.com"
-				FromList="From:hemanthkumar.medisetty@vcontractor.co.za"
+				ToList="To:Hemanth@XYZ.com"
+				CcList="Cc:Hemanth2@XYZ.com"
+				FromList="From:Kumar@XYZ.com"
 				Subject="Subject:PROD | STATUS | L500INJMSQ_Pause  "
 				Body="Please find the attachment contains the L500INJMSQ pause details"
 				Twin=500
